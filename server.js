@@ -26,26 +26,26 @@ app.get('/data', (req, res) => {
 
 // Route to save data
 app.post('/data', (req, res) => {
-  const newData = req.body;
+  const newMessage = req.body.message;
 
-  // Read current data from the file
   fs.readFile(path.join(__dirname, '/data/data.json'), 'utf8', (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: 'Failed to load data' });
-    }
+    if (err) return res.status(500).json({ error: 'Failed to load data' });
 
     let dataObj = JSON.parse(data);
-    dataObj.push(newData); // Add new data to the array
+    dataObj.push(newMessage); // push just the string
 
-    // Save updated data back to file
-    fs.writeFile(path.join(__dirname, '/data/data.json'), JSON.stringify(dataObj, null, 2), (err) => {
-      if (err) {
-        return res.status(500).json({ error: 'Failed to save data' });
+    fs.writeFile(
+      path.join(__dirname, '/data/data.json'),
+      JSON.stringify(dataObj, null, 2),
+      (err) => {
+        if (err) return res.status(500).json({ error: 'Failed to save data' });
+
+        res.status(200).json({ message: 'Data saved successfully' });
       }
-      res.status(200).json({ message: 'Data saved successfully' });
-    });
+    );
   });
 });
+
 
 // Start the server
 app.listen(PORT, () => {

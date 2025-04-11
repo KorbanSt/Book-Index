@@ -25,7 +25,7 @@ form.addEventListener('submit', (e) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(newData),
+    body: JSON.stringify({"message":newData}),
   })
   .then(response => response.json())
   .then(data => {
