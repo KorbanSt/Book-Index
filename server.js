@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to get stored data (we'll store it in a JSON file)
 app.get('/data', (req, res) => {
-  fs.readFile(path.join(__dirname, 'data.json'), 'utf8', (err, data) => {
+  fs.readFile(path.join(__dirname, '/data/data.json'), 'utf8', (err, data) => {
     if (err) {
       return res.status(500).json({ error: 'Failed to load data' });
     }
@@ -29,7 +29,7 @@ app.post('/data', (req, res) => {
   const newData = req.body;
 
   // Read current data from the file
-  fs.readFile(path.join(__dirname, 'data.json'), 'utf8', (err, data) => {
+  fs.readFile(path.join(__dirname, '/data/data.json'), 'utf8', (err, data) => {
     if (err) {
       return res.status(500).json({ error: 'Failed to load data' });
     }
@@ -38,7 +38,7 @@ app.post('/data', (req, res) => {
     dataObj.push(newData); // Add new data to the array
 
     // Save updated data back to file
-    fs.writeFile(path.join(__dirname, 'data.json'), JSON.stringify(dataObj, null, 2), (err) => {
+    fs.writeFile(path.join(__dirname, '/data/data.json'), JSON.stringify(dataObj, null, 2), (err) => {
       if (err) {
         return res.status(500).json({ error: 'Failed to save data' });
       }
