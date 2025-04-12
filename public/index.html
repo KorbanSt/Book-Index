@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Local Node.js App</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Index</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>Welcome to the Local Node.js Web App</h1>
-  
-  <form id="dataForm">
-    <label for="dataInput">Enter something to store:</label>
-    <input type="text" id="dataInput" name="dataInput" required>
-    <button type="submit">Save</button>
-  </form>
-
-  <h2>Stored Data:</h2>
-  <ul id="dataList"></ul>
-
-  <script src="script.js"></script>
+    <div class="card-container">
+        <div class="card" onclick="window.location.href='/html/quote/main.html'">
+            <img src="/assets/images/quoteMain.png">
+            <h3>Quotes</h3>
+        </div>
+        <div class="card" onclick="window.location.href='/html/library/'">
+            <img src="/assets/images/book.png">
+            <h3>Books</h3>
+        </div>
+        <div class="card" onclick="window.location.href='/html/writing/'">
+            <img src="/assets/images/write-edit.png">
+            <h3>Writing</h3>
+        </div>
+    </div>
 </body>
 </html>

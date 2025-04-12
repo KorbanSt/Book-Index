@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Name",
+    "author": "FirstName LastName",
+    "quotes": [
+      {
+        "quote": "With great power comes great responisibility",
+        "people": [
+          "Name"
+        ]
+      }
+    ]
+  }
+]
