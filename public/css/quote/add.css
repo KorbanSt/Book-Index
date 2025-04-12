@@ -116,3 +116,28 @@ body {
 .remove-button:hover {
     background-color: #c82333;
 }
+
+/* --- Popup Fields --- */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .hidden {
+    display: none;
+  }

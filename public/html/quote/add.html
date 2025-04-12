@@ -7,9 +7,16 @@
     <link rel="stylesheet" href="/css/quote/add.css">
 </head>
 <body>
+    <div id="popup" class="popup hidden">
+        <div class="popup-content">
+          <p>Quote submitted successfully!</p>
+          <button onclick="closePopup()">Close</button>
+        </div>
+      </div>
+
     <div class="detail-container">
         <h2>Add Quote</h2>
-        <form action="/submit-quote" method="POST">
+        <form id="quoteForm" method="POST">
             <div class="form-group">
                 <label for="bookTitle">Book Title</label>
                 <input type="text" id="bookTitle" name="bookTitle" required>
@@ -58,6 +65,44 @@
             const entry = button.parentElement;
             entry.remove();
         }
+
+        function showPopup(message) {
+            const popup = document.getElementById('popup');
+            popup.querySelector('p').innerText = message;
+            popup.classList.remove('hidden');
+        }
+
+        function closePopup() {
+            document.getElementById('popup').classList.add('hidden');
+        }
+
+        document.getElementById('quoteForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+
+            // Grab form values manually
+            const bookTitle = form.bookTitle.value;
+            const author = form.author.value;
+            const quote = form.quote.value;
+            const quotedBy = Array.from(document.querySelectorAll('input[name="quotedBy[]"]')).map(input => input.value);
+
+            const response = await fetch('/submit-quote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ bookTitle, author, quote, quotedBy })
+            });
+
+            const result = await response.json();
+
+            if (!result.success) {
+                showPopup(result.message);
+            } else {
+                window.location.href = '/html/quote/main.html';
+            }
+        });
     </script>
 </body>
 </html>
