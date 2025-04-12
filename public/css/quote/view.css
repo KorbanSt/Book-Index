@@ -1,52 +1,71 @@
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
 }
 
-.detail-container {
-    text-align: center;
-    background-color: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 500px;
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  background: white;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
 }
 
-.detail-container h2 {
-    font-size: 2em;
-    margin: 20px 0;
+.book-title {
+  text-align: center;
+  font-size: 2em;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  margin-top: 50px;
 }
 
-.detail-container p {
-    font-size: 1.2em;
-    color: #555;
+.quote {
+  margin-bottom: 25px;
+  padding: 15px;
+  background-color: #ecf0f1;
+  border-left: 5px solid #3498db;
+  border-radius: 5px;
 }
 
-.detail-container img {
-    width: 100%;
-    border-radius: 8px;
-    height: 200px;
-    object-fit: cover;
-    margin-bottom: 20px;
+.quote-text {
+  font-style: italic;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  white-space: pre-wrap; /* Allow line breaks for long quotes */
+  word-wrap: break-word; /* Break long words to fit */
+}
+
+.quote-author {
+  text-align: right;
+  font-weight: bold;
+  color: #555;
+}
+
+.no-quotes {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 40px;
+  color: #999;
 }
 
 .back-button {
-    text-decoration: none;
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1.1em;
-    margin-top: 20px;
-    display: inline-block;
+  display: block;
+  text-align: center;
+  margin-top: 40px;
+  text-decoration: none;
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .back-button:hover {
-    background-color: #0056b3;
+  background-color: #2c80b4;
 }

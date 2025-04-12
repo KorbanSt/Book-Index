@@ -1,16 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card 1 Details</title>
-    <link rel="stylesheet" href="/css/quote/view.css">
+  <meta charset="UTF-8">
+  <title>View Quotes</title>
+  <link rel="stylesheet" href="/css/quote/view.css">
 </head>
 <body>
-    <div class="detail-container">
-        <h2>Card Details</h2>
-        <p>This page contains more detailed information about Card 1. It could have more text, images, or links as needed.</p>
-        <a href="/index.html" class="back-button">Back to Homescreen</a>
-    </div>
+
+  <div id="content" class="container">
+    <p>Loading quotes...</p>
+  </div>
+
+  <a href="/index.html" class="back-button" style="background-color: #6c757d; margin-top: 15px;">Back to Homescreen</a>
+
+  <script>
+    async function loadQuotes() {
+      const container = document.getElementById('content');
+      try {
+        const res = await fetch('/quotes');
+        const data = await res.json();
+
+        container.innerHTML = ''; // Clear loading state
+
+        if (!data.length) {
+          container.innerHTML = '<p class="no-quotes">No quotes found.</p>';
+          return;
+        }
+
+        data.forEach(book => {
+          const titleEl = document.createElement('div');
+          titleEl.className = 'book-title';
+          titleEl.textContent = `"${book.title}" — ${book.author}`;
+          container.appendChild(titleEl);
+
+          book.quotes.forEach(q => {
+            const quoteBox = document.createElement('div');
+            quoteBox.className = 'quote';
+
+            const quoteText = document.createElement('div');
+            quoteText.className = 'quote-text';
+            quoteText.textContent = `"${q.quote}"`;
+
+            const quoteAuthor = document.createElement('div');
+            quoteAuthor.className = 'quote-author';
+            quoteAuthor.textContent = '– ' + q.people.join(', ');
+
+            quoteBox.appendChild(quoteText);
+            quoteBox.appendChild(quoteAuthor);
+            container.appendChild(quoteBox);
+          });
+        });
+      } catch (err) {
+        container.innerHTML = '<p class="no-quotes">Error loading quotes.</p>';
+        console.error(err);
+      }
+    }
+
+    loadQuotes();
+  </script>
 </body>
 </html>
