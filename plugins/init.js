@@ -3,8 +3,7 @@ const getJsonFileData = require('./general/getJsonFileData.js');
 const saveJsonFileData = require('./general/saveJsonFileData.js');
 
 // Backend
-const addQuote = require('./quote/add.js');
-const displayQuotes = require('./quote/display.js');
+const quote = require('./quote/quote.js');
 
 async function init(app, rootDirectory) {
 
@@ -13,8 +12,7 @@ async function init(app, rootDirectory) {
     await getJsonFileData(tools, rootDirectory);
     await saveJsonFileData(tools, rootDirectory);
 
-    await addQuote(app, tools);
-    await displayQuotes(app, tools);
+    await quote(app, tools);
 }
 
 module.exports = init;

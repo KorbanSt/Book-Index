@@ -13,6 +13,15 @@
 
   <a href="/index.html" class="back-button" style="background-color: #6c757d; margin-top: 15px;">Back to Homescreen</a>
 
+  <!-- Error Popup -->
+  <div id="popup" class="popup hidden">
+    <div class="popup-content">
+      <p>Quote submitted successfully!</p>
+      <button onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+
   <script>
     async function loadQuotes() {
       const container = document.getElementById('content');
@@ -33,30 +42,70 @@
           titleEl.textContent = `"${book.title}" — ${book.author}`;
           container.appendChild(titleEl);
 
-          book.quotes.forEach(q => {
+          book.quotes.forEach((q, index) => {
             const quoteBox = document.createElement('div');
             quoteBox.className = 'quote';
 
             const quoteText = document.createElement('div');
             quoteText.className = 'quote-text';
-            quoteText.textContent = `"${q.quote}"`;
+            quoteText.textContent = q.quote;
 
             const quoteAuthor = document.createElement('div');
             quoteAuthor.className = 'quote-author';
             quoteAuthor.textContent = '– ' + q.people.join(', ');
 
+            // Create "Remove" button
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove-quote-button';
+            removeButton.textContent = 'Remove';
+            removeButton.onclick = () => removeQuote(book.title, book.author, index); // Call removeQuote function on click
+
             quoteBox.appendChild(quoteText);
             quoteBox.appendChild(quoteAuthor);
+            quoteBox.appendChild(removeButton);
             container.appendChild(quoteBox);
           });
         });
       } catch (err) {
-        container.innerHTML = '<p class="no-quotes">Error loading quotes.</p>';
+        showPopup('Error loading quotes.');
         console.error(err);
       }
     }
 
+    async function removeQuote(bookTitle, author, quoteIndex) {
+      try {
+        const res = await fetch('/remove-quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bookTitle, author, quoteIndex })
+        });
+        const result = await res.json();
+        
+        if (result.success) {
+          // Remove the quote from the front-end
+          loadQuotes(); // Reload quotes to reflect removal
+        } else {
+            showPopup('Failed to remove quote.');
+        }
+      } catch (err) {
+        console.error('Error removing quote:', err);
+        showPopup('Failed to remove quote.');
+      }
+    }
+
+    // Show the error popup with the given message
+    function showPopup(message) {
+            const popup = document.getElementById('popup');
+            popup.querySelector('p').innerText = message;
+            popup.classList.remove('hidden');
+        }
+
+    function closePopup() {
+        document.getElementById('popup').classList.add('hidden');
+    }
+
     loadQuotes();
   </script>
+
 </body>
 </html>
