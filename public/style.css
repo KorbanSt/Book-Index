@@ -47,3 +47,20 @@ body {
     height: 120px;
     object-fit: cover;
 }
+
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    z-index: 999;
+}
+
+.back-button:hover {
+    background-color: #2a2e31;
+}
