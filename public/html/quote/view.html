@@ -21,6 +21,18 @@
     </div>
   </div>
 
+  <!-- Edit Popup -->
+  <div id="edit-popup" class="popup hidden">
+    <div class="popup-content">
+      <h3>Edit Quote</h3>
+      <input type="text" id="edit-title" placeholder="Book Title"><br><br>
+      <input type="text" id="edit-author" placeholder="Author"><br><br>
+      <textarea id="edit-quote" placeholder="Quote" rows="4"></textarea><br><br>
+      <input type="text" id="edit-people" placeholder="Who said it (comma separated)"><br><br>
+      <button onclick="submitEdit()">Save</button>
+      <button onclick="closeEditPopup()">Cancel</button>
+    </div>
+  </div>
 
   <script>
     async function loadQuotes() {
@@ -60,9 +72,22 @@
             removeButton.textContent = 'Remove';
             removeButton.onclick = () => removeQuote(book.title, book.author, index); // Call removeQuote function on click
 
+            const editButton = document.createElement('button');
+            editButton.className = 'edit-quote-button'; // You can style this differently if you want
+            editButton.textContent = 'Edit';
+            editButton.onclick = () => openEditPopup(book.title, book.author, q.quote, q.people.join(', '), index);
+
             quoteBox.appendChild(quoteText);
             quoteBox.appendChild(quoteAuthor);
-            quoteBox.appendChild(removeButton);
+
+            const actionsContainer = document.createElement('div');
+            actionsContainer.className = 'quote-actions';
+
+            actionsContainer.appendChild(editButton);
+            actionsContainer.appendChild(removeButton);
+
+            quoteBox.appendChild(actionsContainer);
+
             container.appendChild(quoteBox);
           });
         });
@@ -103,6 +128,58 @@
     function closePopup() {
         document.getElementById('popup').classList.add('hidden');
     }
+
+    let editing = {};
+
+  function openEditPopup(title, author, quote, people, index) {
+    editing = { title, author, index };
+
+    document.getElementById('edit-title').value = title;
+    document.getElementById('edit-author').value = author;
+    document.getElementById('edit-quote').value = quote;
+    document.getElementById('edit-people').value = people;
+
+    document.getElementById('edit-popup').classList.remove('hidden');
+  }
+
+  function closeEditPopup() {
+    document.getElementById('edit-popup').classList.add('hidden');
+  }
+
+  async function submitEdit() {
+    const bookTitle = document.getElementById('edit-title').value.trim();
+    const author = document.getElementById('edit-author').value.trim();
+    const quote = document.getElementById('edit-quote').value.trim();
+    const people = document.getElementById('edit-people').value.split(',').map(p => p.trim()).filter(p => p);
+
+    try {
+      const res = await fetch('/edit-quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          originalTitle: editing.title,
+          originalAuthor: editing.author,
+          index: editing.index,
+          newTitle: bookTitle,
+          newAuthor: author,
+          newQuote: quote,
+          newPeople: people
+        })
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        closeEditPopup();
+        loadQuotes(); // Refresh
+      } else {
+        showPopup('Failed to edit quote.');
+      }
+    } catch (err) {
+      console.error('Error editing quote:', err);
+      showPopup('Failed to edit quote.');
+    }
+  }
 
     loadQuotes();
   </script>
